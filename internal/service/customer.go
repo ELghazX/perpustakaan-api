@@ -61,3 +61,30 @@ func (c customerService) Update(ctx context.Context, req dto.UpdateCustomerReque
 
 	return c.customerRepository.Update(ctx, &persisted)
 }
+
+func (c customerService) Delete(ctx context.Context, id string) error {
+	exist, err := c.customerRepository.FindById(ctx, id)
+	if err != nil {
+		return err
+	}
+	if exist.ID == "" {
+		return errors.New("data customer tidak ditemukan")
+	}
+	return c.customerRepository.Delete(ctx, id)
+}
+
+func (c customerService) Show(ctx context.Context, id string) (dto.CustomerData, error) {
+	persisted, err := c.customerRepository.FindById(ctx, id)
+	if err != nil {
+		return dto.CustomerData{}, err
+	}
+	if persisted.ID == "" {
+		return dto.CustomerData{}, errors.New("data customer tidak ditemukan")
+	}
+
+	return dto.CustomerData{
+		ID:   persisted.ID,
+		Name: persisted.Name,
+		Code: persisted.Code,
+	}, nil
+}
