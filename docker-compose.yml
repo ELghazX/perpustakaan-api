@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./postgres:/var/lib/postgresql/data 
+      - pgdata:/var/lib/postgresql/data 
     ports:
       - 8432:5432
   adminer:
@@ -15,5 +15,5 @@ services:
     ports:
       - 8080:8080
 
-# volumes:
-#   pgdata:
+volumes:
+  pgdata:
